@@ -61,20 +61,8 @@ const CONFIG = {
     titulo: "Confirmar",
     texto: "Por favor confirmá tu asistencia antes del",
     fechaLimite: "3 de enero de 2027",
-    // ⚠️ PENDIENTE: acá va el link de tu formulario de confirmación.
-    // Cómo crearlo (google.com/forms, gratis, 2 min):
-    //   1) Andá a https://forms.google.com → "En blanco"
-    //   2) Título: p. ej. "Confirmación de asistencia XV Tahis"
-    //   3) Agregá las preguntas que quieras, p. ej.:
-    //      - "Nombre y apellido" (texto)
-    //      - "¿Asistís a la fiesta?" (opción múltiple: Sí / No)
-    //      - "¿Cuántas personas van?" (número)
-    //      - "¿Algún requisito alimentario?" (párrafo, opcional)
-    //   4) Arriba a la derecha elegí el color/estilo que quieras.
-    //   5) Botón "Enviar" (arriba a la derecha) → "🔗" (enlace) →
-    //      "Acortar URL" para que quede igual al formato de abajo.
-    //   6) Pegá ese link acá, en lugar de esto:
-    formUrl: "https://forms.gle/",
+    formUrl:
+      "https://docs.google.com/forms/d/e/1FAIpQLSd07_AS3KO6-RJQufiMpow06rtdHluEmdMsFEK5bWvaGy4kRg/viewform",
     // Mientras formUrl quede vacío o en el placeholder, la sección
     // "Confirmar" de la invitación NO se muestra (ver render.js).
   },
