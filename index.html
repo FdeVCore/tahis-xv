@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¡Estás invitado/a!</title>
+
+  <!-- Vista previa al compartir por WhatsApp/redes.
+       IMPORTANTE: cuando subas la página, reemplazá "TU-DOMINIO" por la URL
+       real (la imagen y el enlace deben ser URL absoluta para que WhatsApp
+       los muestre). Ver el README. -->
+  <meta name="description" content="¡Tahis cumple XV! Te esperamos el 09 de enero de 2027. Entrá a la invitación para confirmar tu lugar. ✨" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="XV de Tahis" />
+  <meta property="og:title" content="¡XV de Tahis! ✨" />
+  <meta property="og:description" content="Te esperamos el 09 de enero de 2027 en Progreso, Canelones. Toca el sobre para ver los detalles y confirmar tu lugar." />
+  <meta property="og:image" content="https://TU-DOMINIO/images/og-image.jpg" />
+  <meta property="og:url" content="https://TU-DOMINIO/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#f9c9db" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+
+  <!-- Tipografías (equivalentes libres a las del diseño original) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora:wght@500;600&family=Nunito:wght@700;800&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/pase.css" />
+</head>
+
+<!-- data-page="pase" le indica a app.js qué lógica ejecutar -->
+<body data-page="pase">
+  <!-- Marca el borde de la tarjeta a lo largo de toda la pantalla -->
+  <div class="card-edge" aria-hidden="true"></div>
+
+  <main class="pase">
+    <!-- Confeti dorado decorativo (mismo asset que la página de referencia),
+         repetido en dos esquinas para que haya más brillo -->
+    <img class="confetti confetti--1" src="images/decorativo/confetti-dorado.png" alt="" aria-hidden="true" />
+    <img class="confetti confetti--chica confetti--2" src="images/decorativo/confetti-dorado.png" alt="" aria-hidden="true" />
+
+    <!-- Chispitas doradas animadas, para sumar brillantina extra -->
+    <span class="sparkle sparkle--1" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 0c1 5 2 8 5 9-3 1-4 4-5 9-1-5-2-8-5-9 3-1 4-4 5-9z" /></svg>
+    </span>
+    <span class="sparkle sparkle--2" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 0c1 5 2 8 5 9-3 1-4 4-5 9-1-5-2-8-5-9 3-1 4-4 5-9z" /></svg>
+    </span>
+    <span class="sparkle sparkle--3" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 0c1 5 2 8 5 9-3 1-4 4-5 9-1-5-2-8-5-9 3-1 4-4 5-9z" /></svg>
+    </span>
+    <span class="sparkle sparkle--4" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 0c1 5 2 8 5 9-3 1-4 4-5 9-1-5-2-8-5-9 3-1 4-4 5-9z" /></svg>
+    </span>
+    <span class="sparkle sparkle--5" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 0c1 5 2 8 5 9-3 1-4 4-5 9-1-5-2-8-5-9 3-1 4-4 5-9z" /></svg>
+    </span>
+
+    <!-- Fecha pequeña -->
+    <p class="pase__fecha reveal" id="fechaDisplay">00.00.0000</p>
+
+    <!-- Nombre de la festejada -->
+    <h1 class="pase__nombre reveal" id="nombre">Nombre</h1>
+
+    <!-- Título del evento -->
+    <p class="pase__evento reveal" id="tituloEvento">¡Mi cumpleaños!</p>
+
+    <!-- Sobre con sello de cera: es el enlace hacia la invitación completa -->
+    <a class="pase__sobre reveal" href="invitacion.html" aria-label="Hacé clic para ver la invitación">
+      <img src="images/decorativo/sobre.png" alt="" aria-hidden="true" />
+      <img class="pase__sello" src="images/decorativo/sello.png" alt="" aria-hidden="true" />
+    </a>
+
+    <!-- Mensaje de reserva -->
+    <p class="pase__mensaje reveal" id="mensajeReserva">¡Guardamos un lugar para vos!</p>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/countdown.js"></script>
+  <script src="js/reveal.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

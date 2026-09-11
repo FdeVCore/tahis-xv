@@ -1,0 +1,248 @@
+/* ============================================================
+   BASE.CSS
+   Variables globales, reset y componentes compartidos por
+   index.html (el "pase") e invitacion.html (la invitación completa).
+
+   La paleta y los componentes de este archivo están calcados de la
+   página de referencia (fondo rosa con degradé, títulos en cursiva
+   color mauve, tarjeta blanca en forma de arco, insignias circulares
+   con íconos, confeti dorado).
+   ============================================================ */
+
+:root {
+  --color-bg-top: #f9c9db;     /* Rosa clarito: esquina superior del degradé */
+  --color-bg-bottom: #fdf0f4;  /* Rosa casi blanco: resto del degradé de fondo */
+  --color-accent: #f3aac6;     /* Rosa acento (botones, círculos) */
+  --color-title: #c9738f;      /* Mauve de los títulos en cursiva */
+  --color-text-rose: #a24864;  /* Texto rosado oscuro (vestimenta, regalos) */
+  --color-gold: #c9a24b;       /* Dorado, detalle del tema XV */
+  --color-light: #f6f7f7;      /* Casi blanco, texto sobre fondo rosado */
+  --color-dark: #304254;       /* Azul oscuro, texto general sobre blanco */
+  --color-white: #ffffff;
+
+  /* --- Tipografías (equivalentes libres a las del diseño original) --- */
+  --font-script: 'Great Vibes', cursive;   /* Nombre de la festejada, títulos */
+  --font-serif: 'Lora', serif;             /* Números de fecha grandes */
+  --font-sans: 'Poppins', sans-serif;      /* Textos generales */
+  --font-accent: 'Nunito', sans-serif;     /* Pequeños textos destacados */
+
+  --shadow-soft: 0 10px 30px rgba(48, 66, 84, 0.15);
+  --transition-base: 0.4s ease;
+}
+
+/* --- Reset básico --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Tamaño base del texto: en pantallas grandes lo agrandamos un poco
+     para que la tarjeta (que se mantiene angosta, como en el celular)
+     no se vea chica y perdida en medio de la pantalla. Como casi todo
+     el sitio está en rem, esto agranda todo proporcionalmente. */
+  font-size: 18px;
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 23px;
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-dark);
+  /* Un único degradé para TODA la página, fijo a la pantalla
+     ("background-attachment: fixed"). Al estar fijo, no importa
+     cuánto mida la página ni cuántas secciones tenga: se ve siempre
+     parejo, sin ningún corte/línea entre una sección y la siguiente. */
+  background-image: linear-gradient(160deg, var(--color-bg-top), var(--color-bg-bottom) 65%);
+  background-attachment: fixed;
+  background-size: 100% 100vh;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* --- Utilidad: animación de aparición al hacer scroll (ver reveal.js) --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Título en tipografía script/cursiva, usado en cada sub-sección --- */
+.title-script {
+  font-family: var(--font-script);
+  font-size: 2.8rem;
+  color: var(--color-title);
+  line-height: 1;
+}
+
+/* --- Borde vertical fijo: marca los bordes de la "tarjeta" angosta
+   (izquierda y derecha) a lo largo de TODA la página, para que se vea
+   claramente dónde termina la tarjeta y empieza el fondo, incluso al
+   hacer scroll. Es "fixed" así se mantiene de arriba a abajo de la
+   pantalla sin importar cuánto mida la página. --- */
+/* Solo se muestra a partir de tablet/pc (ver media query más abajo):
+   en celular la tarjeta ya ocupa casi todo el ancho de la pantalla,
+   así que estas líneas quedarían pegadas al borde y no se ven bien. */
+.card-edge {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92%, 460px);
+  border-left: 2px solid rgba(255, 255, 255, 0.85);
+  border-right: 2px solid rgba(255, 255, 255, 0.85);
+  box-shadow: inset 4px 0 10px -4px rgba(201, 162, 75, 0.35),
+    inset -4px 0 10px -4px rgba(201, 162, 75, 0.35);
+  pointer-events: none;
+  z-index: 5;
+}
+
+@media (min-width: 640px) {
+  .card-edge {
+    display: block;
+  }
+}
+
+/* --- Confeti dorado decorativo (imagen real recortada del diseño) ---
+   Se usa como acento suelto en varias esquinas, con un ligero
+   parpadeo/flote para que se sienta "vivo" en vez de una imagen fija. */
+.confetti {
+  position: absolute;
+  width: 140px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  animation: brillar 4s ease-in-out infinite;
+}
+
+.confetti--chica {
+  width: 80px;
+}
+
+@keyframes brillar {
+  0%, 100% { opacity: 0.55; transform: scale(0.94) rotate(var(--rot, 0deg)); }
+  50% { opacity: 1; transform: scale(1.06) rotate(var(--rot, 0deg)); }
+}
+
+/* --- Chispitas sueltas (estrellitas doradas animadas), para sumar
+   más brillantina además del confeti real --- */
+.sparkle {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  color: var(--color-gold);
+  opacity: 0.9;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
+  animation: titilar 2.4s ease-in-out infinite;
+}
+
+.sparkle svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+@keyframes titilar {
+  0%, 100% { opacity: 0.45; transform: scale(0.75) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.25) rotate(15deg); }
+}
+
+/* --- Insignia circular con ícono (usada en "Dónde" y "Confirmar") --- */
+.icon-circle {
+  display: inline-grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--color-white);
+  box-shadow: var(--shadow-soft);
+  color: var(--color-accent);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.icon-circle svg {
+  width: 30px;
+  height: 30px;
+  fill: currentColor;
+}
+
+.icon-circle:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 14px 30px rgba(48, 66, 84, 0.22);
+}
+
+/* --- Ícono pequeño en línea (corazones junto al día/horario) --- */
+.icon-inline {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  vertical-align: -3px;
+}
+
+/* --- Tarjeta blanca en forma de arco: agrupa Dónde + Vestimenta + Regalos,
+   igual que en la página de referencia --- */
+.arch-card {
+  position: relative;
+  z-index: 1;
+  width: min(92%, 460px);
+  margin: 0 auto;
+  background: var(--color-white);
+  border-radius: 50% 50% 24px 24px / 18% 18% 6px 6px;
+  padding: 4rem 1.75rem 2.5rem;
+  /* Filete dorado bien fino que marca el borde de la tarjeta, además
+     de la sombra: así se nota la separación entre la tarjeta blanca
+     (delgada) y el fondo rosa, como en la referencia. */
+  border: 1px solid rgba(201, 162, 75, 0.4);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  text-align: center;
+}
+
+.arch-card__divider {
+  width: 60%;
+  height: 1px;
+  background: rgba(48, 66, 84, 0.12);
+  margin: 0.5rem 0;
+}

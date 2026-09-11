@@ -1,0 +1,6 @@
+# Música original en máxima calidad (no se usa; se mantiene solo en local)
+audio/cancion.mp3
+
+# Tipografías que make-og-image.py descarga automáticamente
+scripts/*.ttf
+__pycache__/
