@@ -72,6 +72,10 @@
           </div>
           <input class="player__bar" id="playerBar" type="range" min="0" max="100" value="0" />
         </div>
+
+        <!-- Aviso que aparece solo si el navegador sigue bloqueando el
+             audio y hace falta un toque (ver js/player.js) -->
+        <p class="player__nudge" id="audioNudge" hidden>🎵 Tocá la pantalla para escuchar la música</p>
       </div>
     </div>
   </section>

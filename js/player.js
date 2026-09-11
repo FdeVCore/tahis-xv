@@ -56,7 +56,7 @@ function iniciarReproductor() {
     audio.currentTime = (barra.value / 100) * audio.duration;
   });
 
-  iniciarAutoplayMuteadoConDesmuteoAlPrimerToque(audio, marcarEstado);
+  iniciarAutoplayMuteadoConDesmuteoAlPrimerToque(audio, marcarEstado, document.getElementById("audioNudge"));
 }
 
 /**
@@ -70,7 +70,19 @@ function iniciarReproductor() {
  * toque ya desbloquea. En la PC, mover la rueda solo no basta: hace
  * falta un clic o una tecla.
  */
-function iniciarAutoplayMuteadoConDesmuteoAlPrimerToque(audio, alCambiarEstado) {
+function iniciarAutoplayMuteadoConDesmuteoAlPrimerToque(audio, alCambiarEstado, aviso) {
+  // Si el sonido sigue bloqueado unos segundos, mostramos un aviso para
+  // que la persona sepa que un solo toque activa la música (en iPhone
+  // el scroll NO desbloquea, solo el tap).
+  const esconderAviso = () => {
+    if (aviso && !aviso.hidden) aviso.hidden = true;
+  };
+  if (aviso) {
+    setTimeout(() => {
+      if (audio.muted) aviso.hidden = false;
+    }, 2500);
+  }
+
   audio.muted = true;
   audio.play().catch(() => {
     /* Incluso muteado algunos navegadores/in-app se niegan; el primer
@@ -92,6 +104,7 @@ function iniciarAutoplayMuteadoConDesmuteoAlPrimerToque(audio, alCambiarEstado) 
       // Ya estaba sonando (solo muteada): con este gesto real el
       // navegador considera la interacción válida y se oye.
       alCambiarEstado();
+      esconderAviso();
       dejarDeEscuchar();
       return;
     }
@@ -104,6 +117,7 @@ function iniciarAutoplayMuteadoConDesmuteoAlPrimerToque(audio, alCambiarEstado) 
       .play()
       .then(() => {
         alCambiarEstado();
+        esconderAviso();
         dejarDeEscuchar();
       })
       .catch(() => {});
