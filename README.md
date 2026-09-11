@@ -3,6 +3,12 @@
 Invitación digital para los XV de Tahis (09 de enero de 2027, Progreso, Canelones).
 Todo está hecho en HTML/CSS/JS puro: no requiere servidores ni código complicado.
 
+**Ya está publicada en:** https://fdevcore.github.io/tahis-xv/
+
+Para publicar un cambio: editá los archivos, y en la PC:
+`git add .` → `git commit -m "mensaje"` → `git push`. En 1-2 minutos GitHub
+Pages actualiza el sitio automáticamente.
+
 ## Estructura
 
 ```
