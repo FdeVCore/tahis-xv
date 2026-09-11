@@ -11,8 +11,8 @@
    evitar con código. Lo más parecido a "suena solo" que se puede
    lograr es: arrancar la canción muteada apenas carga la página (eso
    sí está permitido) y activarle el sonido automáticamente en el
-   primerísimo toque/scroll/tecla que la persona haga en la pantalla,
-   sin que tenga que tocar el botón de play.
+   primer toque/clic/tecla que la persona haga, sin que tenga que
+   tocar el botón de play. El scroll no cuenta como gesto (ver abajo).
    ============================================================ */
 
 function iniciarReproductor() {
@@ -60,50 +60,54 @@ function iniciarReproductor() {
 }
 
 /**
- * Arranca la canción muteada apenas carga la página (el navegador sí
- * lo permite) y le saca el mute en el instante en que la persona hace
- * el primer click, touch, tecla o scroll en cualquier parte de la
- * página. El resultado: la música ya está sonando (en silencio) desde
- * antes, y el sonido se activa con la primera interacción, sin que
- * haga falta tocar el botón de play.
+ * Arranca la canción muteada apenas carga la página (el navegador sí lo
+ * permite) y le saca el mute en el instante del PRIMER GESTO REAL:
+ * tocar, hacer clic o apretar una tecla.
+ *
+ * IMPORTANTE (no se puede evitar): el scroll/rueda no es un gesto que
+ * los navegadores acepten para activar sonido. En el celular, eso no es
+ * problema: empezar a scrollear siempre implica tocar la pantalla, y ese
+ * toque ya desbloquea. En la PC, mover la rueda solo no basta: hace
+ * falta un clic o una tecla.
  */
 function iniciarAutoplayMuteadoConDesmuteoAlPrimerToque(audio, alCambiarEstado) {
   audio.muted = true;
-  audio.play().then(alCambiarEstado).catch(() => {
-    /* Incluso muteado algún navegador puede negarse; en ese caso el
-       primer gesto de abajo también dispara el play(). */
+  audio.play().catch(() => {
+    /* Incluso muteado algunos navegadores/in-app se niegan; el primer
+       gesto real de abajo lo reanuda. */
   });
 
-  // Toques/clics/teclas: son los gestos que CUALQUIER navegador acepta
-  // para desbloquear el audio (PC y celular).
-  const gestosReales = ["pointerdown", "touchstart", "click", "keydown"];
-  // Scroll con rueda en PC también desbloquea (algunos navegadores sí lo
-  // cuentan como gesto); en el celular no, pero igual lo intentamos.
-  const gestosScroll = ["scroll", "wheel"];
+  // Únicos gestos que desbloquean audio según la política de los
+  // navegadores (Chrome / Safari / WhatsApp / Instagram).
+  const gestos = ["keydown", "mousedown", "pointerdown", "pointerup", "touchend", "click"];
 
-  const desbloquearScroll = () => {
+  const dejarDeEscuchar = () => {
+    gestos.forEach((ev) => document.removeEventListener(ev, intentarDesbloquear));
+  };
+
+  const intentarDesbloquear = () => {
     audio.muted = false;
-    if (audio.paused) audio.play().catch(() => {});
-    alCambiarEstado();
+
+    if (!audio.paused) {
+      // Ya estaba sonando (solo muteada): con este gesto real el
+      // navegador considera la interacción válida y se oye.
+      alCambiarEstado();
+      dejarDeEscuchar();
+      return;
+    }
+
+    // Estaba pausada/blockeada: el play() dentro de este gesto real
+    // sí está permitido. Solo nos desarmamos cuando el play tuvo éxito;
+    // si un navegador rechaza el primer intento, el próximo gesto
+    // vuelve a intentar.
+    audio
+      .play()
+      .then(() => {
+        alCambiarEstado();
+        dejarDeEscuchar();
+      })
+      .catch(() => {});
   };
 
-  const desbloquearReal = () => {
-    desbloquearScroll();
-    gestosReales.forEach((ev) => document.removeEventListener(ev, desbloquearReal));
-    gestosScroll.forEach((ev) => document.removeEventListener(ev, desbloquearScroll));
-  };
-
-  // El primer gesto real (toque/clic/tecla) desbloquea y ahí sí nos
-  // desarmamos ("once: true").
-  gestosReales.forEach((ev) =>
-    document.addEventListener(ev, desbloquearReal, { once: true, passive: true })
-  );
-
-  // Scroll/wheel desbloquea pero NO remueve a los listeners de toque:
-  // así, si el scroll en el celular no alcanza para desbloquear, el
-  // primer toque de la persona vuelve a intentarlo (ese era el bug: el
-  // scroll "gastaba" el gesto y después los toques no hacían nada).
-  gestosScroll.forEach((ev) =>
-    document.addEventListener(ev, desbloquearScroll, { passive: true })
-  );
+  gestos.forEach((ev) => document.addEventListener(ev, intentarDesbloquear, { passive: true }));
 }
