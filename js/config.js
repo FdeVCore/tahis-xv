@@ -43,7 +43,9 @@ const CONFIG = {
   // --- Código de vestimenta ---
   vestimenta: {
     titulo: "Vestimenta",
-    texto: "Formal. Se reservan los colores dorado y rosa para la cumpleañera.",
+    // El color reservado de la cumpleañera es solo rosa (antes decía
+    // "dorado y rosa"): se actualizó el código de vestimenta.
+    texto: "Formal. Se reserva el color rosa para la cumpleañera.",
   },
 
   // --- Regalos ---
